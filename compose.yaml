@@ -1,0 +1,17 @@
+# docker compose up -d --build
+# Put HELPER_TOKEN=... in a .env file next to this file (see .env.example).
+services:
+  exec-hangars:
+    build: .
+    image: exec-hangars:latest
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      HELPER_TOKEN: ${HELPER_TOKEN:?set HELPER_TOKEN in .env}
+    volumes:
+      - exec-hangars-data:/data
+
+volumes:
+  exec-hangars-data:

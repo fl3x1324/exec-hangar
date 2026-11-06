@@ -1,0 +1,30 @@
+{
+  "versionInfo": "Updated October 30, 2026 - Patch 4.10.2-LIVE - Server 12974691",
+  "serverStartTimes": {
+    "initialOpenTime": "2026-10-29T22:01:09.073000Z",
+    "openDurationMs": 3900123,
+    "closeDurationMs": 7200227
+  },
+  "mapCredits": {
+    "checkmate": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "orbituary": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "ruin-station": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "pyam-exhang": {
+      "label": "u/Kerast",
+      "url": "https://www.reddit.com/r/starcitizen/comments/1i3iyq9/supervisor_exectutive_hangar_maps_pyamsupvisr345/#lightbox"
+    },
+    "pyam-supvisr": {
+      "label": "u/Kerast",
+      "url": "https://www.reddit.com/r/starcitizen/comments/1i3iyq9/supervisor_exectutive_hangar_maps_pyamsupvisr345/#lightbox"
+    }
+  }
+}

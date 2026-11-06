@@ -1,0 +1,81 @@
+# Builds the Windows helper and publishes it as a GitHub release.
+# Versions are a plain incrementing number: tags helper-v1, helper-v2, ...
+# The asset keeps a stable name, so this link always gets the newest build:
+#   https://github.com/<owner>/<repo>/releases/latest/download/exec-hangars-helper.exe
+name: Helper release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - helper/**
+      - src/core/**
+      - scripts/build-helper.ts
+      - scripts/helper-icon.ts
+      - docs/HELPER.md
+      - package.json
+      - bun.lock
+      - .github/workflows/helper-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Never compute the same version number twice.
+concurrency:
+  group: helper-release
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun test
+
+  release:
+    needs: test
+    # Bun can only embed the .exe icon and file details when compiling on Windows.
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags are needed to find the last version
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - run: bun install --frozen-lockfile
+
+      - name: Next version
+        id: version
+        run: |
+          last=$(git tag -l 'helper-v*' | sed 's/^helper-v//' | grep -E '^[0-9]+$' | sort -n | tail -1)
+          echo "number=$(( ${last:-0} + 1 ))" >> "$GITHUB_OUTPUT"
+
+      - name: Build helper.exe
+        run: |
+          bun scripts/build-helper.ts "${{ steps.version.outputs.number }}"
+          cd dist-helper && sha256sum exec-hangars-helper.exe > exec-hangars-helper.exe.sha256
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.number }}
+        run: |
+          gh release create "helper-v$VERSION" \
+            dist-helper/exec-hangars-helper.exe \
+            dist-helper/exec-hangars-helper.exe.sha256 \
+            --target "$GITHUB_SHA" \
+            --title "Helper $VERSION" \
+            --notes-file docs/HELPER.md \
+            --generate-notes

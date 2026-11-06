@@ -1,0 +1,165 @@
+{
+  "serverTimeMs": 1793950800000,
+  "calibration": {
+    "status": "conflict",
+    "calibration": {
+      "anchorMs": 1793311269073,
+      "openMs": 3900123,
+      "closeMs": 7200227
+    },
+    "basis": "arkanis",
+    "upstream": [
+      {
+        "id": "arkanis",
+        "label": "Updated October 30, 2026 - Patch 4.10.2-LIVE - Server 12974691",
+        "calibration": {
+          "anchorMs": 1793311269073,
+          "openMs": 3900123,
+          "closeMs": 7200227
+        },
+        "agreesWithPrimary": true
+      },
+      {
+        "id": "xyxyll",
+        "label": "xyxyll v2.2.32",
+        "calibration": {
+          "anchorMs": 1793311269073,
+          "openMs": 3900123,
+          "closeMs": 7200227
+        },
+        "agreesWithPrimary": true
+      }
+    ],
+    "observations": [
+      {
+        "atMs": 1793950285603,
+        "elevators": 1,
+        "residualMs": 2399957,
+        "agrees": false
+      }
+    ],
+    "notes": [
+      "Newest elevator observation disagrees with upstream; waiting for confirmation."
+    ]
+  },
+  "state": {
+    "phase": "closed",
+    "subPhase": "charging",
+    "lights": [
+      "green",
+      "green",
+      "red",
+      "red",
+      "red"
+    ],
+    "cycleIndex": 57,
+    "cycleStartMs": 1793943989023,
+    "msIntoCycle": 6810977,
+    "phaseEndsAtMs": 1793955089373,
+    "nextChangeAtMs": 1793952209282
+  },
+  "schedule": [
+    {
+      "kind": "open",
+      "atMs": 1793955089373,
+      "cycleIndex": 58
+    },
+    {
+      "kind": "close",
+      "atMs": 1793958989496,
+      "cycleIndex": 58
+    },
+    {
+      "kind": "open",
+      "atMs": 1793966189723,
+      "cycleIndex": 59
+    },
+    {
+      "kind": "close",
+      "atMs": 1793970089846,
+      "cycleIndex": 59
+    },
+    {
+      "kind": "open",
+      "atMs": 1793977290073,
+      "cycleIndex": 60
+    },
+    {
+      "kind": "close",
+      "atMs": 1793981190196,
+      "cycleIndex": 60
+    },
+    {
+      "kind": "open",
+      "atMs": 1793988390423,
+      "cycleIndex": 61
+    },
+    {
+      "kind": "close",
+      "atMs": 1793992290546,
+      "cycleIndex": 61
+    },
+    {
+      "kind": "open",
+      "atMs": 1793999490773,
+      "cycleIndex": 62
+    },
+    {
+      "kind": "close",
+      "atMs": 1794003390896,
+      "cycleIndex": 62
+    },
+    {
+      "kind": "open",
+      "atMs": 1794010591123,
+      "cycleIndex": 63
+    },
+    {
+      "kind": "close",
+      "atMs": 1794014491246,
+      "cycleIndex": 63
+    },
+    {
+      "kind": "open",
+      "atMs": 1794021691473,
+      "cycleIndex": 64
+    },
+    {
+      "kind": "close",
+      "atMs": 1794025591596,
+      "cycleIndex": 64
+    },
+    {
+      "kind": "open",
+      "atMs": 1794032791823,
+      "cycleIndex": 65
+    },
+    {
+      "kind": "close",
+      "atMs": 1794036691946,
+      "cycleIndex": 65
+    }
+  ],
+  "sources": [
+    {
+      "id": "arkanis",
+      "url": "https://raw.githubusercontent.com/ArkanisCorporation/Exec-Hangar/main/config.json",
+      "ok": true,
+      "fetchedAt": 1793950740000,
+      "error": null
+    },
+    {
+      "id": "xyxyll",
+      "url": "https://exec.xyxyll.com/app.js",
+      "ok": true,
+      "fetchedAt": 1793950740000,
+      "error": null
+    }
+  ],
+  "helper": {
+    "lastEventAt": 1793950315602,
+    "lastEnv": null,
+    "lastShard": null,
+    "lastClientBuild": null
+  }
+}

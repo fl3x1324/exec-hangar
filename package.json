@@ -1,0 +1,51 @@
+{
+  "name": "exec-hangars",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "bun --bun vite dev --port 3000",
+    "generate-routes": "bun --bun vite build",
+    "build": "bun --bun vite build",
+    "preview": "bun --bun vite preview",
+    "start": "bun scripts/serve.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "helper": "bun helper/main.ts",
+    "helper:build": "bun scripts/build-helper.ts",
+    "fixtures": "bun scripts/fixtures.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-devtools": "0.10.14",
+    "@tanstack/react-router": "1.170.46",
+    "@tanstack/react-router-devtools": "1.167.2",
+    "@tanstack/react-start": "1.169.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@tanstack/devtools-vite": "0.8.6",
+    "@types/bun": "1.4.3",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  },
+  "intent": {
+    "skills": [
+      "*"
+    ]
+  }
+}

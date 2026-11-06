@@ -1,0 +1,37 @@
+{
+  "serverTimeMs": 1793949600000,
+  "calibration": {
+    "status": "none",
+    "calibration": null,
+    "basis": null,
+    "upstream": [],
+    "observations": [],
+    "notes": [
+      "No upstream source available; using nominal 65/120 min phases."
+    ]
+  },
+  "state": null,
+  "schedule": [],
+  "sources": [
+    {
+      "id": "arkanis",
+      "url": "https://raw.githubusercontent.com/ArkanisCorporation/Exec-Hangar/main/config.json",
+      "ok": false,
+      "fetchedAt": null,
+      "error": "HTTP 503"
+    },
+    {
+      "id": "xyxyll",
+      "url": "https://exec.xyxyll.com/app.js",
+      "ok": false,
+      "fetchedAt": null,
+      "error": "HTTP 503"
+    }
+  ],
+  "helper": {
+    "lastEventAt": null,
+    "lastEnv": null,
+    "lastShard": null,
+    "lastClientBuild": null
+  }
+}
