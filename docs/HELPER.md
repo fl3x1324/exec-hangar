@@ -50,7 +50,10 @@ On the first start the helper creates **exec-hangars-helper.json** next to the
 - **server**: the address of the timer website you use (the same address you
   open in your browser). The site's *Helper* page shows it with a copy button,
   and can download this file with the address already filled in.
-- **token**: ask whoever runs the timer site. Keep it to yourself.
+- **token**: your personal token, from whoever runs the timer site. They can
+  also send you a ready `exec-hangars-helper.json` with everything filled in:
+  then just put it next to the .exe (replacing the one the helper created) and
+  skip this step. Keep your token to yourself.
 - **log**: only change this if Star Citizen is installed somewhere else. Point
   it at `Game.log` inside your `StarCitizen\LIVE` folder. Use double
   backslashes (`\\`) in the path.
@@ -93,8 +96,8 @@ Right-click the icon:
 
 ## Troubleshooting
 
-- **"The server rejected the token"**: the token is wrong or was changed. Get
-  the current one, update the settings file, start again.
+- **"The server rejected the token"**: the token is wrong, or the site admin
+  revoked it. Ask them for a new one, update the settings file, start again.
 - **"The helper is already running"**: it's already in the notification area
   (check behind the **^** arrow). Only one copy runs at a time.
 - **Stuck on amber while playing**: the `log` path is wrong. In the RSI

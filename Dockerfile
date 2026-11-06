@@ -1,6 +1,6 @@
 # exec-hangars web server (TanStack Start on Bun).
 #   docker build -t exec-hangars .
-#   docker run -d -p 3000:3000 -e HELPER_TOKEN=... -v exec-hangars-data:/data exec-hangars
+#   docker run -d -p 3000:3000 -e ADMIN_TOKEN=... -v exec-hangars-data:/data exec-hangars
 
 ARG BUN_VERSION=1.4.4
 

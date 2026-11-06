@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as HelperRouteImport } from './routes/helper'
 import { Route as ApiEventsRouteImport } from './routes/api/events'
 import { Route as ApiStateRouteImport } from './routes/api/state'
@@ -18,6 +19,11 @@ import { Route as ApiTimeRouteImport } from './routes/api/time'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelperRoute = HelperRouteImport.update({
@@ -43,6 +49,7 @@ const ApiTimeRoute = ApiTimeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/helper': typeof HelperRoute
   '/api/events': typeof ApiEventsRoute
   '/api/state': typeof ApiStateRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/helper': typeof HelperRoute
   '/api/events': typeof ApiEventsRoute
   '/api/state': typeof ApiStateRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/helper': typeof HelperRoute
   '/api/events': typeof ApiEventsRoute
   '/api/state': typeof ApiStateRoute
@@ -65,14 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/helper' | '/api/events' | '/api/state' | '/api/time'
+  fullPaths:
+    '/' | '/admin' | '/helper' | '/api/events' | '/api/state' | '/api/time'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/helper' | '/api/events' | '/api/state' | '/api/time'
-  id: '__root__' | '/' | '/helper' | '/api/events' | '/api/state' | '/api/time'
+  to: '/' | '/admin' | '/helper' | '/api/events' | '/api/state' | '/api/time'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/helper'
+    | '/api/events'
+    | '/api/state'
+    | '/api/time'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   HelperRoute: typeof HelperRoute
   ApiEventsRoute: typeof ApiEventsRoute
   ApiStateRoute: typeof ApiStateRoute
@@ -86,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/helper': {
@@ -121,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   HelperRoute: HelperRoute,
   ApiEventsRoute: ApiEventsRoute,
   ApiStateRoute: ApiStateRoute,

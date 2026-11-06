@@ -290,7 +290,11 @@ upstream source (positive = later). It is the running measurement of
 
 ### 4.3 `POST /api/events`
 
-Ingest from the helper. Header `Authorization: Bearer <HELPER_TOKEN>`.
+Ingest from the helper. Header `Authorization: Bearer <token>`, where the token
+is a per-player token minted on `/admin` (see 4.8) or the shared `HELPER_TOKEN`.
+The server records which token sent each event (`tokenId`; `'legacy'` for the
+shared token) and runs close detection per token + `helperId`, so one token
+can't add events to another player's helper.
 
 ```ts
 {
@@ -305,9 +309,9 @@ Ingest from the helper. Header `Authorization: Bearer <HELPER_TOKEN>`.
 |---|---|
 | `200 { accepted, added }` | `accepted` = valid events in batch, `added` = new after dedupe |
 | `400` | invalid JSON or batch shape |
-| `401` | wrong token |
+| `401` | unknown or revoked token |
 | `413` | body > 256 KiB |
-| `503` | `HELPER_TOKEN` not set on server |
+| `503` | no `HELPER_TOKEN` and no active minted token on the server |
 
 Individual invalid events are dropped silently (not counted in `accepted`).
 
@@ -349,8 +353,23 @@ All carry `at` (ms, > 2024-01-01, < now + 1 h).
 
 | Env | Default | |
 |---|---|---|
-| `HELPER_TOKEN` | (none) | Required for ingest. `.env` is git-ignored; see `.env.example`. |
-| `DATA_DIR` | `./data` | Event store location. |
+| `ADMIN_TOKEN` | (none) | Password for `/admin` (token management). Unset = admin page off. |
+| `HELPER_TOKEN` | (none) | Optional shared helper token, accepted alongside minted ones. `.env` is git-ignored; see `.env.example`. |
+| `DATA_DIR` | `./data` | Event store (`events.jsonl`) and token store (`tokens.json`). |
+
+### 4.8 Helper tokens and `/admin`
+
+- `/admin` signs in with `ADMIN_TOKEN` and keeps a signed, HttpOnly,
+  SameSite=Strict cookie for 7 days. Changing `ADMIN_TOKEN` signs everyone out.
+  Every admin server function checks the session itself.
+- **Create**: name → random token `eh_<32 chars>`, shown once, plus a ready
+  `exec-hangars-helper.json` (server + token) to send to the player.
+- **Storage**: `DATA_DIR/tokens.json` holds `{ id, name, sha256, last 4 chars,
+  createdAt, lastUsedAt, revokedAt }`, never the token itself.
+- **Revoke**: the token gets `401` from then on. **Revoke + delete reports** /
+  **Delete reports** also remove that token's stored events (atomic rewrite of
+  `events.jsonl`), so the timer recalculates without them.
+- The shared `HELPER_TOKEN` shows as a read-only row; switch it off by unsetting it.
 
 ---
 
@@ -447,4 +466,4 @@ garbage rejection.
 | Do light timings ever change? | Only visible in game; occasional manual check. |
 | Detecting server-only deploys | Partly covered: a strong close that disagrees → `observed`. Could also watch the Arkanis commit feed. |
 | Production deployment | Nitro with the bun preset; its latest release is a fresh RC, so deferred. |
-| Multi-user | Single shared token for now; a per-helper token or account is needed before others run the helper. |
+| Multi-user | Per-player tokens minted by the admin (4.8). Self-service sign-up deliberately not offered: anyone could post fake closes. |

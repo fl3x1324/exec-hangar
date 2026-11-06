@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { DEFAULT_GAME_LOG, HELPER_DOWNLOAD_URL, HELPER_GUIDE_URL, HELPER_SHA256_URL, RELEASES_URL } from './links'
+import { downloadText, helperSettingsJson, SETTINGS_FILENAME } from './helperSettings'
+import { HELPER_DOWNLOAD_URL, HELPER_GUIDE_URL, HELPER_SHA256_URL, RELEASES_URL } from './links'
 
 /**
  * /helper: download and setup guide for the Windows helper, in the timer's
@@ -133,7 +134,8 @@ export function HelperPage() {
         <Card title="Troubleshooting" className="mt-6">
           <div className="divide-y divide-zinc-800/80">
             <Faq q='"The server rejected the token"'>
-              The token is wrong or was changed. Get the current one, update the settings file, start again.
+              The token is wrong, or the site admin revoked it. Ask them for a new one, update the settings file, start
+              again.
             </Faq>
             <Faq q='"The helper is already running"'>
               It's already in the notification area (check behind the <b>^</b> arrow). Only one copy runs at a time.
@@ -193,7 +195,7 @@ export function HelperPage() {
 function Settings({ origin }: { origin: string | null }) {
   const [copied, setCopied] = useState(false)
   const server = origin ?? 'https://…'
-  const json = `${JSON.stringify({ server, token: 'paste-the-token-here', log: DEFAULT_GAME_LOG }, null, 2)}\n`
+  const json = helperSettingsJson(server, 'paste-the-token-here')
 
   const copy = async () => {
     try {
@@ -204,14 +206,7 @@ function Settings({ origin }: { origin: string | null }) {
       /* clipboard unavailable */
     }
   }
-  const download = () => {
-    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }))
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'exec-hangars-helper.json'
-    a.click()
-    setTimeout(() => URL.revokeObjectURL(url), 1000)
-  }
+  const download = () => downloadText(SETTINGS_FILENAME, json)
 
   return (
     <div className="space-y-4">
@@ -232,7 +227,10 @@ function Settings({ origin }: { origin: string | null }) {
         </div>
         <div>
           <dt className="font-semibold text-zinc-100">token</dt>
-          <dd className="mt-1 text-zinc-400">Ask whoever runs this site. Keep it to yourself.</dd>
+          <dd className="mt-1 text-zinc-400">
+            Your personal token, from whoever runs this site. They can also send you a ready settings file with it filled
+            in: then just put that file next to the .exe and skip this step. Keep it to yourself.
+          </dd>
         </div>
         <div>
           <dt className="font-semibold text-zinc-100">log</dt>

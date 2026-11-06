@@ -38,6 +38,11 @@ export type HelperEvent = {
   receivedAt: number
   clockOffsetMs: number
   helperId: string
+  /**
+   * Which helper token sent it (server-assigned; 'legacy' = the shared
+   * HELPER_TOKEN). Absent on events stored before per-player tokens.
+   */
+  tokenId?: string
 }
 
 export const SCHEDULE_HORIZON_MS = 24 * 3_600_000
@@ -53,7 +58,8 @@ export function buildReport(input: {
   const toServerTime = (s: HelperEvent): LogEvent => ({ ...s.event, at: s.event.at + s.clockOffsetMs })
 
   // Detect per helper so one player's elevators are never added to another's.
-  const byHelper = Map.groupBy(stored, (s) => s.helperId)
+  // helperId is client-chosen, so scope it by the (server-assigned) token too.
+  const byHelper = Map.groupBy(stored, (s) => `${s.tokenId ?? 'legacy'}:${s.helperId}`)
   const closes = mergeCloses([...byHelper.values()].map((list) => detectCloses(list.map(toServerTime))))
   const calibration = buildCalibration(upstream, closes)
   const cal = calibration.calibration

@@ -13,14 +13,15 @@ Frontend brief (no game knowledge needed): [docs/FRONTEND.md](docs/FRONTEND.md),
   - `calibration.ts` – combines upstream trackers + elevator close observations
   - `upstream.ts` – parsers for Arkanis `config.json` and xyxyll `app.js`
   - `protocol.ts` – helper → server payload validation
-- `src/routes/api/` – `GET /api/time`, `GET /api/state`, `POST /api/events` (Bearer `HELPER_TOKEN`)
+- `src/routes/api/` – `GET /api/time`, `GET /api/state`, `POST /api/events` (Bearer helper token)
+- `/admin` – create / revoke per-player helper tokens (password: `ADMIN_TOKEN`)
 - `helper/main.ts` – Windows helper: follows Game.log, syncs clock, posts events
 - Events are stored raw in `data/events.jsonl` so detection rules can be re-run.
 
 ## Run
 
 ```
-cp .env.example .env        # set HELPER_TOKEN
+cp .env.example .env        # set ADMIN_TOKEN (and/or HELPER_TOKEN)
 bun dev                     # server on :3000
 bun test                    # core tests (fixtures from a real 2026-11-06 hangar close)
 bun run helper:build        # → dist-helper/exec-hangars-helper.exe
@@ -45,14 +46,18 @@ Dev-only UI previews: `/?fx=<docs/fixtures name>&speed=600` (ignored in producti
 ## Deploy (Docker)
 
 ```
-cp .env.example .env        # set HELPER_TOKEN (a long random string)
+cp .env.example .env        # set ADMIN_TOKEN (a long random string)
 docker compose up -d --build
 ```
 
+Then open `/admin`, sign in with `ADMIN_TOKEN`, and create a token per player. Each gets a
+ready `exec-hangars-helper.json` to download and send them. Revoking a token (optionally deleting
+its reports) cuts off just that player.
+
 - Serves on port 3000 (`PORT=8080 docker compose up -d` to change the host port).
-- Helper events persist in the `exec-hangars-data` volume (`/data/events.jsonl`).
+- Helper events and tokens persist in the `exec-hangars-data` volume (`/data/events.jsonl`, `/data/tokens.json`).
 - Without compose: `docker build -t exec-hangars .` then
-  `docker run -d -p 3000:3000 -e HELPER_TOKEN=... -v exec-hangars-data:/data exec-hangars`.
+  `docker run -d -p 3000:3000 -e ADMIN_TOKEN=... -v exec-hangars-data:/data exec-hangars`.
 - Keep the host clock NTP-synced: browsers and helpers use the server as their time reference.
 - Without Docker: `bun run build && bun run start` (`scripts/serve.ts`).
 

@@ -1,5 +1,5 @@
 # docker compose up -d --build
-# Put HELPER_TOKEN=... in a .env file next to this file (see .env.example).
+# Put ADMIN_TOKEN=... (and optionally HELPER_TOKEN=...) in a .env file next to this file (see .env.example).
 services:
   exec-hangars:
     build: .
@@ -9,7 +9,8 @@ services:
     ports:
       - "${PORT:-3000}:3000"
     environment:
-      HELPER_TOKEN: ${HELPER_TOKEN:?set HELPER_TOKEN in .env}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?set ADMIN_TOKEN in .env}
+      HELPER_TOKEN: ${HELPER_TOKEN:-}
     volumes:
       - exec-hangars-data:/data
 
