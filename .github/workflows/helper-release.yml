@@ -59,7 +59,8 @@ jobs:
       - name: Next version
         id: version
         run: |
-          last=$(git tag -l 'helper-v*' | sed 's/^helper-v//' | grep -E '^[0-9]+$' | sort -n | tail -1)
+          # sed -n (not grep) so "no tags yet" isn't an error under bash -e -o pipefail
+          last=$(git tag -l 'helper-v*' | sed -n 's/^helper-v\([0-9][0-9]*\)$/\1/p' | sort -n | tail -1)
           echo "number=$(( ${last:-0} + 1 ))" >> "$GITHUB_OUTPUT"
 
       - name: Build helper.exe
