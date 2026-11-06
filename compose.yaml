@@ -7,7 +7,9 @@ services:
     restart: unless-stopped
     init: true
     ports:
-      - "${PORT:-3000}:3000"
+      # Localhost only by default: a reverse proxy (nginx) fronts it.
+      # Set BIND=0.0.0.0 in .env to expose it directly instead.
+      - "${BIND:-127.0.0.1}:${PORT:-3000}:3000"
     environment:
       ADMIN_TOKEN: ${ADMIN_TOKEN:?set ADMIN_TOKEN in .env}
       HELPER_TOKEN: ${HELPER_TOKEN:-}

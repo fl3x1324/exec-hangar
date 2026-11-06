@@ -54,7 +54,8 @@ Then open `/admin`, sign in with `ADMIN_TOKEN`, and create a token per player. E
 ready `exec-hangars-helper.json` to download and send them. Revoking a token (optionally deleting
 its reports) cuts off just that player.
 
-- Serves on port 3000 (`PORT=8080 docker compose up -d` to change the host port).
+- Publishes on `127.0.0.1:3000`, for a reverse proxy in front (nginx + TLS). Set `PORT` in `.env`
+  to change the host port, or `BIND=0.0.0.0` to expose it directly.
 - Helper events and tokens persist in the `exec-hangars-data` volume (`/data/events.jsonl`, `/data/tokens.json`).
 - Without compose: `docker build -t exec-hangars .` then
   `docker run -d -p 3000:3000 -e ADMIN_TOKEN=... -v exec-hangars-data:/data exec-hangars`.
