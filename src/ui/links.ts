@@ -1,6 +1,7 @@
 /** GitHub repository that publishes the helper releases. */
 export const REPO = 'fl3x1324/exec-hangar'
-export const RELEASES_URL = `https://github.com/${REPO}/releases`
+export const REPO_URL = `https://github.com/${REPO}`
+export const RELEASES_URL = `${REPO_URL}/releases`
 /** Always the newest helper build (release assets keep a stable name). */
 export const HELPER_DOWNLOAD_URL = `${RELEASES_URL}/latest/download/exec-hangars-helper.exe`
 export const HELPER_SHA256_URL = `${HELPER_DOWNLOAD_URL}.sha256`
